@@ -110,12 +110,12 @@ export const useDoorsStore = defineStore('doors', () => {
 		setState(STATES.PREPARE)
 		for (let i = 0; i < doors.value.length; i++) {
 			doors.value[i] = {
-			...doors.value[i],
-			...{
-				type: null,
-				isOpened: false,
-				selected: false,
-			},
+				...doors.value[i],
+				...{
+					type: null,
+					isOpened: false,
+					selected: false,
+				},
 			}
 		}
 		setCarInDoor()
