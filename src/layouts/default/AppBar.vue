@@ -2,12 +2,16 @@
 	<v-app-bar flat>
 		<v-app-bar-nav-icon @click.stop="navigationStore.toggleDrawer"></v-app-bar-nav-icon>
 
-		<v-app-bar-title text="Monty Hall"></v-app-bar-title>
-		<v-img
-			:width="150"
-			contain
-			:src="image"
-		></v-img>
+		<v-sheet>
+			<v-img
+				:width="125"
+				contain
+				:src="image"
+				class="justify-start"
+			></v-img>
+		</v-sheet>
+
+		<v-spacer></v-spacer>
 
 		<v-btn @click="toggleTheme">toggle theme</v-btn>
 	</v-app-bar>

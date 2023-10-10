@@ -1,5 +1,5 @@
 <template>
-	<v-navigation-drawer floating v-model="drawer">
+	<v-navigation-drawer v-model="drawer" temporary>
 		<v-list>
 			<v-list-item>
 				<router-link to="/">Home</router-link>
