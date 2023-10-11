@@ -49,7 +49,6 @@
 	})
 
 	function updateTable () {
-		console.log('updated');
 		const games = [...props.games]
 		const allFinishedGames = games.filter((game) => game.isWon !== null)
 		const allGamesCount = allFinishedGames.length
