@@ -15,17 +15,16 @@
 <script setup>
 	import { getPercentValue } from '@/utiles/getPercentValue'
 	import { ref, watch, onMounted } from 'vue'
-	import {
-		VDataTable,
-		VDataTableServer,
-		VDataTableVirtual,
-	} from "vuetify/labs/VDataTable"
+	import { VDataTable	} from "vuetify/labs/VDataTable"
+	import { debounce } from 'lodash'
 
 	const props = defineProps({
 		games: Array
 	})
 
-	watch(props.games, updateTable)
+	watch(props.games, debounce(() => {
+		updateTable()
+	}, 500))
 
 	let tableSettings = ref({
 		itemsPerPage: 1,
@@ -50,6 +49,7 @@
 	})
 
 	function updateTable () {
+		console.log('updated');
 		const games = [...props.games]
 		const allFinishedGames = games.filter((game) => game.isWon !== null)
 		const allGamesCount = allFinishedGames.length
