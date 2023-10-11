@@ -16,7 +16,7 @@
 	import { getPercentValue } from '@/utiles/getPercentValue'
 	import { ref, watch, onMounted } from 'vue'
 	import { VDataTable	} from "vuetify/labs/VDataTable"
-	import { debounce } from 'lodash'
+	import debounce from 'lodash.debounce'
 
 	const props = defineProps({
 		games: Array
