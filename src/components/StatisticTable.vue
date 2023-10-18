@@ -12,22 +12,36 @@
 	
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { getPercentValue } from '@/utiles/getPercentValue'
-	import { ref, watch, onMounted } from 'vue'
-	import { VDataTable	} from "vuetify/labs/VDataTable"
+	import { ref, watch, onMounted, PropType } from 'vue'
+	import { VDataTable } from "vuetify/labs/VDataTable"
 	import debounce from 'lodash.debounce'
+	import type Game from '@/types/game'
+	import type GameStats from '@/types/gameStats'
+
+	/**
+	 * Local Types
+	 */
+	type Headers = InstanceType<typeof VDataTable>['headers']
+
+	type TTableSettings = {
+		headers: Headers
+	}
+	/* --- */
 
 	const props = defineProps({
-		games: Array
+		games: {
+			required: true,
+			type: Array as PropType<Game[]>
+		}
 	})
 
 	watch(props.games, debounce(() => {
 		updateTable()
 	}, 500))
 
-	let tableSettings = ref({
-		itemsPerPage: 1,
+	let tableSettings = ref<TTableSettings>({
 		headers: [
 			{
 				title: 'Тип',
@@ -42,13 +56,13 @@
         ],
 	})
 
-	let gamesStats = ref([])
+	let gamesStats = ref<GameStats[]>([])
 
 	onMounted(() => {
 		updateTable()
 	})
 
-	function updateTable () {
+	function updateTable (): void {
 		const games = [...props.games]
 		const allFinishedGames = games.filter((game) => game.isWon !== null)
 		const allGamesCount = allFinishedGames.length

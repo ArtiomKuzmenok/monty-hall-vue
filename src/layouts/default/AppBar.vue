@@ -17,7 +17,7 @@
 	</v-app-bar>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { useTheme } from 'vuetify'
 	import { useNavigationDrawerStore } from '@/store/drawer';
 	import image from '@/assets/logo.jpg'
@@ -25,7 +25,7 @@
 	const theme = useTheme()
 	const navigationStore = useNavigationDrawerStore()
 
-	function toggleTheme () {
+	function toggleTheme (): void {
 		theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 	}
 </script>

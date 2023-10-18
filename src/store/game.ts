@@ -3,26 +3,28 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import STATES from '@/utiles/states'
 import { random } from '@/utiles/getRundomNumber'
+import type Game from '@/types/game'
+import type Door from '@/types/door'
 
 export const useDoorsStore = defineStore('doors', () => {
 	const state = ref(STATES.PREPARE)
-	let games = ref([])
+	let games = ref<Game[]>([])
 	let doorClicked = ref(false)
 	let arr = Array(3)
 		.fill(0)
 		.map((item, index) => ({
-			type: null,
+			type: '',
 			isOpened: false,
 			selected: false,
 			id: Date.now() + index,
 		}))
-	let doors = ref(arr)
+	let doors = ref<Door[]>(arr)
 
-	function setState(stateVal) {
+	function setState(stateVal: string): void {
 		state.value = stateVal
 	}
 		
-	function setCarInDoor() {
+	function setCarInDoor(): void {
 		if (state.value !== STATES.PREPARE) {
 			console.warn("Wrong state to set car")
 			return
@@ -40,7 +42,7 @@ export const useDoorsStore = defineStore('doors', () => {
 		setState(STATES.WAIT_FOR_SELECT)
 	}
 		
-	function selectDoor(index) {
+	function selectDoor(index: number): void {
 		if (state.value !== STATES.WAIT_FOR_SELECT) {
 			console.warn("Wrong state to select door")
 		}
@@ -51,11 +53,11 @@ export const useDoorsStore = defineStore('doors', () => {
 		doors.value[index].selected = true
 	}
 
-	function selectedDoorApproved() {
+	function selectedDoorApproved(): void {
 		setState(STATES.DOOR_APPROVED)
 	}
 		
-	function montyOpenDoor() {
+	function montyOpenDoor(): void {
 		if (state.value !== STATES.DOOR_OPEN_SELF) {
 			console.warn("Wrong state to select door")
 			return
@@ -69,7 +71,7 @@ export const useDoorsStore = defineStore('doors', () => {
 		setState(STATES.WAIT_FOR_CHANGE)
 	}
 		
-	function chooseChange(changed) {
+	function chooseChange(changed: boolean): void {
 		if (state.value !== STATES.WAIT_FOR_CHANGE) {
 			console.warn("Wrong state to select change")
 			return
@@ -82,11 +84,16 @@ export const useDoorsStore = defineStore('doors', () => {
 			}
 			})
 		}
-		games.value.at(-1).isChanged = changed
-		setState(STATES.READY_FOR_RESULTS)
+
+		let lastGame = getLastGame();
+
+		if(lastGame) {
+			lastGame.isChanged = changed
+			setState(STATES.READY_FOR_RESULTS)
+		}
 	}
 		
-	function openResult() {
+	function openResult(): void {
 		if (state.value !== STATES.READY_FOR_RESULTS) {
 			console.warn("Wrong state to see results")
 			return
@@ -101,24 +108,32 @@ export const useDoorsStore = defineStore('doors', () => {
 			return door.selected
 		})
 
-		selected.isOpened = true
-		games.value.at(-1).isWon = doors.value[selectedIndex].type == "car"
-		setState(STATES.RESULT)
+		let lastGame = getLastGame()
+
+		if( selected && selectedIndex && lastGame) {
+			selected.isOpened = true
+			lastGame.isWon = doors.value[selectedIndex].type == "car"
+			setState(STATES.RESULT)
+		}
 	}
 		
-	function restart() {
+	function restart(): void {
 		setState(STATES.PREPARE)
 		for (let i = 0; i < doors.value.length; i++) {
 			doors.value[i] = {
 				...doors.value[i],
 				...{
-					type: null,
+					type: '',
 					isOpened: false,
 					selected: false,
 				},
 			}
 		}
 		setCarInDoor()
+	}
+
+	function getLastGame(): Game | undefined {
+		return games.value.at(-1)
 	}
   
 	return { doors, state, games, doorClicked, setCarInDoor, selectDoor, selectedDoorApproved, montyOpenDoor, chooseChange, openResult, restart }

@@ -1,21 +1,23 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { random } from '@/utiles/getRundomNumber'
+import type Game from '@/types/game'
+import type Door from '@/types/door'
 
 export const useSimulatorStore = defineStore('simulator', () => {
-	let gamesSimulator = ref([])
+	let gamesSimulator = ref<Game[]>([])
 	let isSimulationStarted = ref(false)
 	let arr = Array(3)
 		.fill(0)
 		.map((item, index) => ({
-			type: null,
+			type: '',
 			isOpened: false,
 			selected: false,
 			id: Date.now() + index,
 		}))
-	let doors = arr
+	let doors: Array<Door> = arr
 
-	function oneGameIteration () {
+	function oneGameIteration (): void {
 		const carType = random()
 		doors.forEach((door, i) => {
 			door.type = i == carType ? "car" : "goat"
@@ -49,19 +51,19 @@ export const useSimulatorStore = defineStore('simulator', () => {
 				}
 			})
 		}
-		gamesSimulator.value.at(-1).isChanged = chooseChnages
+		gamesSimulator.value.at(-1).isChanged = !!chooseChnages
 
 		selectedDoor.isOpened = true
 		gamesSimulator.value.at(-1).isWon = doors[selectedDoorIndex].type == "car"
 		reset()
 	}
 
-	function reset() {
+	function reset(): void {
 		for (let i = 0; i < doors.length; i++) {
 			doors[i] = {
 				...doors[i],
 				...{
-					type: null,
+					type: '',
 					isOpened: false,
 					selected: false,
 				},

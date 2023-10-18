@@ -70,12 +70,11 @@
 	</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import Door from '@/components/Door.vue';
 	import { useDoorsStore } from '@/store/game'
-	import { computed, onMounted } from 'vue';
+	import { computed, onMounted, onUnmounted } from 'vue';
 	import STATES from '@/utiles/states';
-import { onUnmounted } from 'vue';
 
 	const gameStore = useDoorsStore()
 	const doors = computed(() => gameStore.doors)
@@ -90,7 +89,7 @@ import { onUnmounted } from 'vue';
 		onRestart()
 	})
 
-	function onDoorClick(index) {
+	function onDoorClick(index: number): void {
 		if (state.value === STATES.WAIT_FOR_SELECT) {
 			if(!doorClicked.value)
 				gameStore.doorClicked = true
@@ -98,30 +97,30 @@ import { onUnmounted } from 'vue';
 		}
 	}
 
-	function onApprove() {
+	function onApprove(): void {
 		gameStore.doorClicked = false
 		gameStore.selectedDoorApproved()
 	}
 
-	function onMontyShouldOpenDoor() {
+	function onMontyShouldOpenDoor(): void {
 		gameStore.state = STATES.DOOR_OPEN_SELF
 		gameStore.montyOpenDoor()
 	}
 
-	function onChoose(isShouldChange) {
+	function onChoose(isShouldChange: boolean): void {
 		gameStore.chooseChange(isShouldChange)
 	}
 
-	function onShowResults() {
+	function onShowResults(): void {
 		gameStore.openResult()
 	}
 
-	function onRestart() {
+	function onRestart(): void {
 		gameStore.doorClicked = false
 		gameStore.restart()
 	}
 
-	function isWon() {
+	function isWon(): boolean | null {
 		return games.value.at(-1).isWon
 	}
 </script>

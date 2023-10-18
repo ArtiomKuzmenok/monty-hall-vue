@@ -16,7 +16,7 @@
 	<statistic-table :games="games"/>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { useSimulatorStore } from '@/store/simulator';
 	import StatisticTable from '@/components/StatisticTable.vue';
 	import { computed } from 'vue';
@@ -25,7 +25,7 @@
 	const games = computed(() => simulatorStore.gamesSimulator)
 	const isSimulationStarted = computed(() => simulatorStore.isSimulationStarted)
 
-	function startSimulation(events, times = 1000) {
+	function startSimulation(events: Event, times = 1000): void {
 		simulatorStore.isSimulationStarted = true
 		let i = 0
 		while ( i < times ) {

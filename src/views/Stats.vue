@@ -6,7 +6,7 @@
 	<statistic-table :games="games"/>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import StatisticTable from '@/components/StatisticTable.vue';
 	import { useDoorsStore } from '@/store/game'
 	import { computed } from 'vue';

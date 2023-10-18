@@ -8,7 +8,7 @@
 	</v-app>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import NavigationDrawer from './NavigationDrawer.vue'
 	import DefaultBar from './AppBar.vue'
 	import DefaultView from './View.vue'

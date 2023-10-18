@@ -16,7 +16,7 @@
 	</v-navigation-drawer>
 </template>
   
-<script setup>
+<script lang="ts" setup>
 	import { useNavigationDrawerStore } from '@/store/drawer';
 	import { computed } from 'vue';
 

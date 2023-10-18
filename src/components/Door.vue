@@ -7,23 +7,32 @@
 	</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { computed } from 'vue';
 	import car from '@/assets/car.webp'
 	import goat from '@/assets/goat.png'
 
-	const images = {
+	/**
+	 * Local Types
+	 */
+	 type DoorImages = {
+		car: string,
+		goat: string
+	 }
+	/* --- */
+
+	const images: DoorImages = {
 		car,
 		goat
 	}
 
-	const props = defineProps({
-		type: String,
-		opened: Boolean,
-		selected: Boolean
-	})
+	const props = defineProps<{
+		type: string,
+		opened: boolean,
+		selected: boolean
+	}>()
 
-	let imageSrc = computed(() => images[props.type] )
+	let imageSrc = computed(() => images[props.type as keyof DoorImages] )
 </script>
 
 <style scoped>

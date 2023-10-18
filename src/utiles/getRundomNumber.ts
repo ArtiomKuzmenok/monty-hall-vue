@@ -1,8 +1,8 @@
-function randomNum(min, max) {
+function randomNum(min: number, max: number): number {
 	return Math.floor(Math.random() * (max + 1 - min)) + min
 }
 
-function random(max = 2) {
+function random(max: number = 2): number {
 	return randomNum(0, max)
 }
 
